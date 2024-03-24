@@ -869,6 +869,20 @@ require('lazy').setup({
       end,
     },
   },
+  {
+    'nvim-tree/nvim-tree.lua',
+    version = '*',
+    lazy = false,
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require('nvim-tree').setup {}
+    end,
+    keys = {
+      { '<D-b>', '<leader>:NvimTreeToggle<CR>', desc = 'NvimTree' },
+    },
+  },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
