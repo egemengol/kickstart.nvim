@@ -77,7 +77,7 @@ vim.opt.splitbelow = true
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
+-- vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
@@ -474,8 +474,8 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
+        gopls = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -800,7 +800,7 @@ require('lazy').setup({
     opts = {
       open_mapping = '<D-Esc>',
       direction = 'vertical',
-      size = function(term)
+      size = function()
         return vim.o.columns * 0.3
       end,
     },
@@ -818,6 +818,18 @@ require('lazy').setup({
     keys = {
       { '<D-b>', '<leader>:NvimTreeToggle<CR>', desc = 'NvimTree' },
     },
+  },
+  {
+    'windwp/nvim-autopairs',
+    -- Optional dependency
+    dependencies = { 'hrsh7th/nvim-cmp' },
+    config = function()
+      require('nvim-autopairs').setup {}
+      -- If you want to automatically add `(` after selecting a function or method
+      local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
+      local cmp = require 'cmp'
+      cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+    end,
   },
 }, {
   ui = {
@@ -843,3 +855,25 @@ require('lazy').setup({
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+-- Tab widths
+-- Python settings
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'go',
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.shiftwidth = 4
+  end,
+})
+
+-- JavaScript settings
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'javascript',
+  callback = function()
+    vim.opt_local.tabstop = 2 -- A tab is two spaces
+    vim.opt_local.softtabstop = 2 -- Pressing Tab inserts two spaces
+    vim.opt_local.shiftwidth = 2 -- Each indent level is two spaces
+    vim.opt_local.expandtab = true -- Convert tabs to spaces
+  end,
+})
