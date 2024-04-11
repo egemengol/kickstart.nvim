@@ -877,3 +877,13 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.expandtab = true -- Convert tabs to spaces
   end,
 })
+
+-- HTML settings
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'html',
+  callback = function()
+    vim.opt_local.tabstop = 2 -- A tab is two spaces
+    vim.opt_local.softtabstop = 2 -- Pressing Tab inserts two spaces
+    vim.opt_local.shiftwidth = 2 -- Each indent level is two spaces
+  end,
+})
